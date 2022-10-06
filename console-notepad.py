@@ -2,46 +2,48 @@ from colorama import init
 from colorama import Fore, Back , Style
 import random
 
-
 init()
 print(Fore.CYAN, Style.BRIGHT)
-print("Your list\n")
+print("YOUR LIST\n")
 
+user_list = {}
 dictionary = {}
 
 class Accaunt_notepad:
+    
     def __init__(self, user):
         self.user_name = user
-        self.user = []
         self.iduser = random.randint(1, 100)
         dictionary.update({self.iduser:user})
+        user_list.update({self.iduser:""})
+        self.notepad_list = list(user_list.values())
     
     def display_info(self):
-        print(Style.DIM + f'\nYour name: {self.user_name}\nYour ID: {self.iduser}\n{dictionary}' + Style.BRIGHT)
+        print(Style.DIM + f'\nYour name: {self.user_name}\nYour ID: {self.iduser}\n{dictionary}\n{user_list}\n{self.notepad_list}' + Style.BRIGHT)
     
     def display_acc(self):
         return dictionary
     
     def display_list(self):
-        print(self.user)
+        print(self.notepad_list)
     
     def notepad(self):
-        self.user = []
+        return self.notepad_list
     
     def add_append(self, text):
-        self.user.append(text)
-    
+        self.notepad_list.append(text)
+        
     def notepad_count(self, word):
-        return self.user.count(word)
+        return self.notepad_list.count(word)
     
     def notepad_remove(self, word):
-        return self.user.remove(word)
+        return self.notepad_list.remove(word)
 
     def notepad_clear(self):
-        self.user.clear()
+        self.notepad_list.clear()
     
     def notepad_pop(self, number):
-        self.user.pop(number)
+        self.notepad_list.pop(number)
 
 class Real_acc:
     def __init__(self, iduser, user):
@@ -52,7 +54,6 @@ class Real_acc:
     def display_acc2(self):
         return self.sing_in_acc
         
-
 #delete all list
 def delete_all():
     delete_all_quation = True
@@ -99,9 +100,10 @@ def your_list():
     print("\n")
     user_name.display_info()
     
-    for open_list in user_name.user:
-        print(Fore.GREEN + str(number) + Fore.WHITE + " >>> " + Fore.CYAN + open_list + Fore.WHITE )
-        number += 1
+    for open_list in user_name.notepad():
+        if open_list != "":
+            print(Fore.GREEN + str(number) + Fore.WHITE + " >>> " + Fore.CYAN + open_list + Fore.WHITE )
+            number += 1
     if number < 2:
         print(Fore.RED + "\nYOU DON`T HAVE A NOTE" + Fore.WHITE)
 
@@ -126,6 +128,9 @@ def delete_in_add():
                 continue
 
 def sing_in():
+    
+    user_name.display_info()
+    
     print(Fore.YELLOW + "SING IN" + Fore.WHITE)
     
     sing_id = int(input("Write your ID: "))
@@ -156,7 +161,7 @@ def sing_in():
 def main_menu():
     menu = True
     while(menu == True):
-    
+        user_name.display_info()
         try:
             print(Fore.GREEN + "Y O U R   N O T E P A D |")
             print(Fore.GREEN + "________________________|" +
