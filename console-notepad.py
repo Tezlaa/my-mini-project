@@ -10,41 +10,47 @@ user_list = {}
 dictionary = {}
 
 class Accaunt_notepad:
-    
     def __init__(self, user):
         self.user_name = user
         self.iduser = random.randint(1, 100)
+        
         dictionary.update({self.iduser:user})
-        user_list.update({self.iduser:""})
-        self.notepad_list = list(user_list.values())
-    
+        
+        user_list.update({self.iduser:[]})
+            
     def display_info(self):
-        print(Style.DIM + f'\nYour name: {self.user_name}\nYour ID: {self.iduser}\n{dictionary}\n{user_list}\n{self.notepad_list}' + Style.BRIGHT)
+        print(Style.DIM + f'\nYour name: {self.user_name}\nYour ID: {self.iduser}\n\n {user_list}\n{dictionary}' + Style.BRIGHT)
     
     def display_acc(self):
         return dictionary
     
     def display_list(self):
-        print(self.notepad_list)
-    
-    def notepad(self):
-        return self.notepad_list
+        print(self.user_list)
+
     
     def add_append(self, text):
-        self.notepad_list.append(text)
+        user_list[self.iduser] += [text]
         
     def notepad_count(self, word):
-        return self.notepad_list.count(word)
+        return list(user_list[self.iduser]).count(word)
     
     def notepad_remove(self, word):
-        return self.notepad_list.remove(word)
+        return list(user_list[self.iduser]).remove(word)
 
     def notepad_clear(self):
-        self.notepad_list.clear()
+        list(user_list[self.iduser]).clear()
     
     def notepad_pop(self, number):
-        self.notepad_list.pop(number)
-
+        list(user_list[self.iduser]).pop(number)
+        
+    def visual_list(self):
+        number = 1
+        for open_list in user_list.get(self.iduser):
+            print(Fore.GREEN + str(number) + Fore.WHITE + " >>> " + Fore.CYAN + open_list + Fore.WHITE)
+            number += 1
+        if number < 2:
+            print(Fore.RED + "\nYOU DON`T HAVE A NOTE" + Fore.WHITE)
+                
 class Real_acc:
     def __init__(self, iduser, user):
         self.user = user
@@ -53,7 +59,7 @@ class Real_acc:
         
     def display_acc2(self):
         return self.sing_in_acc
-        
+ 
 #delete all list
 def delete_all():
     delete_all_quation = True
@@ -73,6 +79,8 @@ def delete_all():
 
 #add text in notepad
 def add_in_notepad():
+    
+    user_name.display_info()
     
     i = 0
     while(i == 0):
@@ -96,19 +104,16 @@ def add_in_notepad():
 
 #print full list
 def your_list():
-    number = 1
-    print("\n")
+    
     user_name.display_info()
     
-    for open_list in user_name.notepad():
-        if open_list != "":
-            print(Fore.GREEN + str(number) + Fore.WHITE + " >>> " + Fore.CYAN + open_list + Fore.WHITE )
-            number += 1
-    if number < 2:
-        print(Fore.RED + "\nYOU DON`T HAVE A NOTE" + Fore.WHITE)
+    print("\n")
+    user_name.visual_list()
 
 #delete in lists 
 def delete_in_add():
+    
+    user_name.display_info()
     
     exit = True
     while exit == True:
@@ -161,7 +166,11 @@ def sing_in():
 def main_menu():
     menu = True
     while(menu == True):
+        
         user_name.display_info()
+        print(dictionary[id])
+        
+        
         try:
             print(Fore.GREEN + "Y O U R   N O T E P A D |")
             print(Fore.GREEN + "________________________|" +
@@ -220,8 +229,6 @@ while(start_lobby == True):
         
         #OOP register
         user_name = Accaunt_notepad(input("\nWrite the name for your acc: "))
-        user_name.display_info()
-        user_name.notepad()
         
         #open main menu 
         main_menu()
