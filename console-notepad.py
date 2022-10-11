@@ -1,5 +1,6 @@
 from colorama import init
 from colorama import Fore, Back , Style
+import os
 import random
 
 init()
@@ -10,18 +11,17 @@ user_list = {}
 dictionary = {1992:"ADMIN",}
 sing_id = 0
 
-class Accaunt_notepad:  
-    def __init__(self, user):
-        global sing_id
-        self.user_name = user
-        sing_id = random.randint(1, 100)
-        
-        dictionary.update({sing_id:user})
-        
-        user_list.update({sing_id:[]})
-            
-    def display_info(self):
-        print(Style.DIM + Fore.CYAN + f'\nYour name: {self.user_name}\nYour ID: {sing_id}\n\n {user_list}\n{dictionary}'+ Fore.WHITE + Style.BRIGHT)
+
+def account(name_user):
+    global sing_id
+    sing_id = random.randint(1, 100)
+    
+    dictionary.update({sing_id:name_user})
+    
+    user_list.update({sing_id:[]})
+
+def display_info():
+    print(Style.DIM + Fore.CYAN + f'\nYour name: {user_name}\nYour ID: {sing_id}\n\n {user_list}\n{dictionary}'+ Fore.WHITE + Style.BRIGHT)
         
 class Real_acc:
     def __init__(self, iduser, user):
@@ -37,25 +37,31 @@ def delete_all():
     delete_all_quation = True
     
     while(delete_all_quation == True):
+        os.system('cls||clear')
         
         quation = input("You sure (yes or no)?\n>>> ").lower().strip()
 
         if quation == "yes":
+            os.system('cls||clear')
+            
             notepad_list.clear()
             return
         elif quation == "no":
             return
         else:
             print(Fore.RED + "\n---Error---\n" + Fore.WHITE )
+            input(Fore.RED + "\ntype any key..." + Fore.WHITE)
 
 #add text in notepad
 def add_in_notepad():    
     
     i = 0
     while(i == 0):
+        os.system('cls||clear')
         print("__" * 50)
         
-        user_list[sing_id] += [input("\nwrite text in your list: ").strip()]
+        user_list[sing_id] += [input("\nWRITE TEXT IN YOUR LIST"+  Fore.GREEN +">>"+ Fore.WHITE).strip()]
+        os.system('cls||clear')
         
         check_menu = notepad_list.count("@menu")
         check_list = notepad_list.count("@list")
@@ -65,36 +71,54 @@ def add_in_notepad():
             notepad_list.remove("@menu")
             i = 1
         elif check_list == 1:
+            os.system('cls||clear')
+            
             notepad_list.remove("@list")
-            your_list()
+            your_list(True)
         elif check_help == 1:
+            os.system('cls||clear')
+            
             notepad_list.remove("@help")
             print(Fore.MAGENTA + "\nHi, this is a management information page\n\n" + 
                   Fore.GREEN + "@list" + Fore.WHITE + " - info that in your list\n" +
                   Fore.GREEN + "@help" + Fore.WHITE + " - this page\n" +
                   Fore.GREEN + "@menu" + Fore.WHITE + " - go to start menu\n")
-            input("...")
+            input(Fore.RED + "\ntype any key..." + Fore.WHITE)
         else:
             continue
     return
 
 #print full list
-def your_list():
+def your_list(quation):
+    os.system('cls||clear')
     
     print("\n")
     number = 1
+    
+    print("__" * 50 + "\n")
     for open_list in user_list.get(sing_id):
-        print(Fore.GREEN + str(number) + Fore.WHITE + " >>> " + Fore.CYAN + open_list + Fore.WHITE)
+        print(Fore.GREEN + str(number) + Fore.WHITE + " >>>  " + Fore.CYAN + open_list + Fore.WHITE)
         number += 1
     if number < 2:
+        os.system('cls||clear')
+        
         print(Fore.RED + "\nYOU DON`T HAVE A NOTE" + Fore.WHITE)
+        input(Fore.RED + "\ntype any key..." + Fore.WHITE)
+        return
+    if quation == True:
+        print("__" * 50)
+        input(Fore.RED + "\ntype any key..." + Fore.WHITE)
+        return os.system('cls||clear')
+    print("__" * 50)
 
 #delete in lists 
 def delete_in():
 
     exit = True
     while exit == True:
-        your_list()
+        os.system('cls||clear')
+        
+        your_list(False)
         print(Fore.RED, Style.DIM + "\n@exit - EXIT" + Fore.WHITE, Style.BRIGHT)
         number_delete = input("Write number which do you want delete: ")
         
@@ -106,16 +130,20 @@ def delete_in():
                 notepad_list.pop(delete_result)
                 continue
             except:
+                os.system('cls||clear')
+                
                 print(Fore.RED + "\n---Error, write correct number...---\n" + Fore.WHITE)
                 continue
 
 def sing_in():
-    print(Fore.YELLOW + "SING IN" + Fore.WHITE)
-    
     global sing_id
+
+    print(Fore.YELLOW + "SING IN" + Fore.WHITE)
     
     sing_id = int(input("Write your ID: "))
     sing_user = input("Write your USER NAME: ")
+    
+    os.system('cls||clear')
     
     user_name2 = Real_acc(sing_id, sing_user)
 
@@ -130,17 +158,27 @@ def sing_in():
         for check in range(len(dictionary)):
             if sing_id == 1992 and sing_user == "ADMIN":
                 try:
-                    user_name.display_info()
-                    input(Fore.RED + "..." + Fore.WHITE)
+                    os.system('cls||clear')
+                    
+                    display_info()
+                    input(Fore.RED + "\ntype any key..." + Fore.WHITE)
+                    
+                    os.system('cls||clear')
                 except:
+                    os.system('cls||clear')
+                    
                     print(Fore.RED + "\n\nError, only one account" + Fore.WHITE)
-                    input()
+                    input(Fore.RED + "\ntype any key..." + Fore.WHITE)
                 return
             if valuelist[i] == valuelist2[0] and idlist[i] == idlist2[0]:
+                os.system('cls||clear')
+                
                 main_menu()
                 return
             i += 1
         else:
+            os.system('cls||clear')
+            
             print(Fore.RED + "\n---Error ID or USER NAME---\n" + Fore.WHITE)
             sing = False
             start_lobby = True
@@ -152,6 +190,8 @@ def main_menu():
     while(menu == True):
         global notepad_list
         notepad_list = user_list[sing_id]
+        
+        os.system('cls||clear')
 
         try:
             print(Fore.GREEN + "Y O U R   N O T E P A D |")
@@ -163,7 +203,10 @@ def main_menu():
                 Fore.GREEN + "\n0"  + Fore.WHITE + " - EXIT\n")
             select_menu = int(input(">>> ").strip())
         except:
+            os.system('cls||clear')
+            
             print(Fore.RED + "\n---Error number---\n" + Fore.WHITE)
+            input(Fore.RED + "\ntype any key..." + Fore.WHITE)
             continue
             
         if select_menu == 1:
@@ -173,27 +216,32 @@ def main_menu():
         elif select_menu == 3:
             delete_all()
         elif select_menu == 4:
-            your_list()
-            input("\ntype any key...")
+            your_list(True)
         elif select_menu == 0:
             exit_menu = True
             while (exit_menu == True):
+                os.system('cls||clear')
                 
                 quation_exit = input("You sure? >>> ").strip().lower()
                 
                 if quation_exit == "yes":
-                    return "\nExit...\n"
+                    os.system('cls||clear')
+                    input(Fore.RED + "EXIT..." + Fore.WHITE)
+                    return
 
                 elif quation_exit == "no":
                     exit_menu = False    
                 else:
                     exit_menu = True
                     print( Fore.RED + "\nWrite (\"yes\" or \"no\"\n)" + Fore.WHITE)
+                    input(Fore.RED + "\ntype any key..." + Fore.WHITE)
+                    os.system('cls||clear')
 
 #started menu
 start_lobby = True
 number_start = 1
 while(start_lobby == True):
+    os.system('cls||clear')
     
     #select lobby
     try:
@@ -205,24 +253,40 @@ while(start_lobby == True):
               Fore.GREEN + "\n0"  + Fore.WHITE + " - EXIT\n")
         select_register = int(input(">>> ").strip())
     except:
+        os.system('cls||clear')
+        
         print(Fore.RED + "\n---Error number---\n" + Fore.WHITE)
         continue
+
     
     #select
     if select_register == 1:
+        os.system('cls||clear')
         
-        #OOP register
-        user_name = Accaunt_notepad(input("\nWrite the name for your acc: "))
+        #add in dictionary and in list
+        user_name = input("\nWrite the name for your acc: ")
+        account(user_name)
+        
+        os.system('cls||clear')
+        
         print(Fore.GREEN + "SUCCESSFULL REGISTER" + Fore.WHITE)
         print(Fore.YELLOW + f'YOUR ID: {sing_id}' + Fore.WHITE)
         input(Fore.YELLOW + "\nLog in your account" + Fore.WHITE)
+        
+        os.system('cls||clear')
     elif select_register == 2:
+        os.system('cls||clear')
+        
         sing_in()
     elif select_register == 3:
+        os.system('cls||clear')
         print(Fore.MAGENTA + "\nHi, this is a management information page\n\n" + 
                   Fore.GREEN + "@list" + Fore.WHITE + " - info that in your list(in add list)\n" +
                   Fore.GREEN + "@help" + Fore.WHITE + " - this page(in add list)\n" +
                   Fore.GREEN + "@menu" + Fore.WHITE + " - go to start menu(in add list)\n")
+        input(Fore.RED + "\ntype any key..." + Fore.WHITE)
+        
+        os.system('cls||clear')
     elif select_register == 0:
         start_lobby = False
     number_start += 1
