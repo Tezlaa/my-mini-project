@@ -1,5 +1,6 @@
 import random
 
+
 def search_password():
     password = ''
     password_search = input("Write your password: ")

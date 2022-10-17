@@ -1,7 +1,7 @@
-from colorama import init
-from colorama import Fore, Back , Style
 import os
 import random
+
+from colorama import Back, Fore, Style, init
 
 init()
 print(Fore.CYAN, Style.BRIGHT)
@@ -79,7 +79,7 @@ def add_in_notepad():
             os.system('cls||clear')
             
             notepad_list.remove("@help")
-            print(Fore.MAGENTA + "\nHi, this is a management information page\n\n" + 
+            print(Fore.MAGENTA + "\nHi, this is a management information page\n\n" +
                   Fore.GREEN + "@list" + Fore.WHITE + " - info that in your list\n" +
                   Fore.GREEN + "@help" + Fore.WHITE + " - this page\n" +
                   Fore.GREEN + "@menu" + Fore.WHITE + " - go to start menu\n")

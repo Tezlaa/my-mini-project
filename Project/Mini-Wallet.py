@@ -1,6 +1,7 @@
 import os
-from colorama import init
-from colorama import Fore, Back, Style
+
+from colorama import Back, Fore, Style, init
+
 init()
 print( Style.DIM)
 
