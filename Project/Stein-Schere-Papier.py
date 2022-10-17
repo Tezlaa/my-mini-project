@@ -7,13 +7,13 @@ print(Style.BRIGHT)
 
 select = 0
 
-print(Fore.GREEN + "\tSTONE OF NONES\n")
+print(Fore.GREEN + "Stein-Schere-Papier\n" + Fore.WHITE)
 
 def startmenu():
     global select
     while select < 3:
-        print(Fore.WHITE + "\tMAIN MENU\n\n-1) Go to game\n-2) Check stats game\n")
-        select = int(input("Make your choice: "))
+        print("MAIN MENU\n\n-1) Go to game\n-2) Check stats game\n\n" + Fore.RED + "-0) exit" + Fore.WHITE)
+        select = int(input(Fore.GREEN + ">>>" + Fore.WHITE))
         if select == 1:
             maingame()
         elif select == 2:
@@ -22,10 +22,10 @@ def startmenu():
 def maingame():
     global select_in_game
     
-    print(Fore.GREEN + "GAME\n")
+    print(Fore.GREEN + "GAME\n" + Fore.WHITE)
     exit = False
     while exit == False:
-        select_in_game = int(input("-1) STONE\n-2) NONES\n-3) PAPER\n-0) exit\n>>>"))
+        select_in_game = int(input("-1) STONE\n-2) SCHERE\n-3) PAPER\n\n" + Fore.RED + "-0) exit\n" + Fore.GREEN +  ">>>" + Fore.WHITE))
         if select_in_game == 1 or select_in_game == 2 or select_in_game == 3:
             game()
         elif select_in_game == 0:
@@ -50,10 +50,16 @@ def stats():
     
 def result(symbol):
     if symbol == "win":
+        print("|" * 15)
         print(Fore.GREEN + "YOU WIN!" + Fore.WHITE)
+        print("|" * 15)
     elif symbol == "lose":
+        print("|" * 15)
         print(Fore.GREEN + "YOU LOSE!" + Fore.WHITE)
+        print("|" * 15)
     elif symbol == "draw":
+        print("|" * 15)
         print(Fore.GREEN + "DRAW!" + Fore.WHITE)
+        print("|" * 15)
 
 startmenu()
