@@ -50,7 +50,7 @@ def startmenu():
     while select < 3:
         clear_console()
         
-        print( Fore.GREEN +"MAIN MENU\n\n"+ Fore.WHITE +"-1) Go to game\n-2) Check stats game\n\n" + Fore.RED + "-0) exit" + Fore.WHITE)
+        print( Fore.GREEN +"MAIN MENU\n\n"+ Fore.WHITE +"-1) Go to the game\n-2) Check stats game\n\n" + Fore.RED + "-0) exit" + Fore.WHITE)
         select = int(input(Fore.GREEN + ">>>" + Fore.WHITE))
         if select == 1:
             maingame()
@@ -69,6 +69,7 @@ def maingame():
     exit = False
     while exit == False:
         clear_console()
+        
         print(Fore.WHITE)
         try: 
             select_in_game = int(input("1) STONE\n2) SCHERE\n3) PAPER\n\n" + Fore.RED + "0) exit\n" + Fore.GREEN +  ">>>" + Fore.WHITE).strip())
