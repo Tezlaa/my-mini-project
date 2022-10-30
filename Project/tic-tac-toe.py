@@ -24,14 +24,17 @@ class Player():
         
         exit_with_select = False
         while exit_with_select == False:
-            self.select_i = int(input(f'\n{self.name} select line: ')) - 1
+            try:
+                self.select_i = int(input(f'\n{self.name} select line: ')) - 1
             
-            self.select_j = int(input(f'{self.name} select column: ')) - 1
-            
-            if field[self.select_i][self.select_j] == "_":
-                field[self.select_i][self.select_j] = self.symbol
-                exit_with_select = True
-            else:
+                self.select_j = int(input(f'{self.name} select column: ')) - 1
+                
+                if field[self.select_i][self.select_j] == "_":
+                    field[self.select_i][self.select_j] = self.symbol
+                    exit_with_select = True
+                else:
+                    red_text("ERROR THIS FIELD IS BUSY")
+            except:
                 red_text("ERROR")
         clear_console()
 
@@ -72,12 +75,12 @@ def result():
     if check_win() == 0:
         
         quation = input("\nDo you want a repeat?\n1)-Repeat\n2)-Close the game\n" + Fore.GREEN + ">>>" + Fore.WHITE) 
-        if quation == "1":
+        if quation == "2":
+            return 2
+        else :
             field = np.array([["_", "_", "_"], ["_", "_", "_"], ["_", "_", "_"]])
             step = 0
             return 1
-        if quation == "2":
-            return 2
                      
 #supporting funcions
 def red_text(text):
@@ -128,9 +131,9 @@ if __name__=="__main__":
             green_text("THE DRAW!")
             
             quation = input("\nDo you want a repeat?\n1)-Repeat\n2)-Close the game\n" + Fore.GREEN + ">>>" + Fore.WHITE) 
-            if quation == "1":
+            if quation == "2":
+                break
+            else:
                 field = np.array([["_", "_", "_"], ["_", "_", "_"], ["_", "_", "_"]])
                 step = 0
                 continue
-            if quation == "2":
-                break
