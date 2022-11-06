@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from math import *
 
 def add_number(number):
     output = field_write.get()
-    if output[0] == '0':
+    if output[0] == '0' and len(output)==1:
         output = output[1:]
     field_write.delete(0, END)
     field_write.insert(0, output+str(number))
@@ -24,7 +25,26 @@ def calculate():
     if value[-1] in '-+/*':
         value = value + value[:-1]
     field_write.delete(0, END)
-    field_write.insert(0, eval(value))
+    try:
+        field_write.insert(0, eval(value))
+    except (NameError, SyntaxError):
+        messagebox.showinfo("ERROR", "You write other symbol")
+        field_write.insert(0, 0)
+    except ZeroDivisionError:
+        messagebox.showinfo("ERROR", "Cannot divide by zero")
+        field_write.insert(0, 0)
+
+def clear_input():
+    field_write.delete(0, END)
+    field_write.insert(0, 0)
+
+def press_key(event):
+    if event.char.isdigit():
+        add_number(event.char)
+    elif event.char in '+-*/':
+        add_operation(event.char)
+    elif event.char == '\r':
+        calculate()
 
 def make_button(number):
     return Button(text=number, font=("Arial", 20), foreground="black", background="white",\
@@ -38,6 +58,11 @@ def make_button_result(operation):
     return Button(text=operation, font=("Arial", 20), foreground="black", background="white",\
                     command=calculate)
 
+def make_clean_button(symbol):
+    return Button(text=symbol, font=("Arial", 20), foreground="black", background="white",\
+                    command=clear_input)
+
+
 main_menu = Tk()
 
 #Visual for the window
@@ -48,9 +73,12 @@ main_menu.iconbitmap(default="D:\Developments\Python\GIT\mini-project\Project\Ca
 main_menu.attributes("-alpha", 1)
 main_menu["bg"] = "white"
 
+#bind on number
+main_menu.bind('<Key>', press_key)
+
 #main input field 
 field_write = ttk.Entry(main_menu, justify=RIGHT, font=("", 20,), width=13)
-field_write.insert(0, '0')
+field_write.insert(0, 0)
 field_write.grid(row=0, column=0, columnspan=4, sticky="we")
 
 #created buttons with numbers from 9 to 0
@@ -71,12 +99,14 @@ make_operation_button("+").grid(row=1, column=3, sticky="wens", padx=2, pady=2)
 make_operation_button("-").grid(row=2, column=3, sticky="wens", padx=2, pady=2)
 make_operation_button("/").grid(row=3, column=3, sticky="wens", padx=2, pady=2)
 make_operation_button("*").grid(row=4, column=3, sticky="wens", padx=2, pady=2)
+
 #math operation
 make_operation_button("^").grid(row=2, column=4, sticky="wens", padx=1, pady=2) #pow
 make_operation_button(".").grid(row=3, column=4, sticky="wens", padx=1, pady=2) #dot 
 make_operation_button("√").grid(row=4, column=4, sticky="wens", padx=1, pady=2) #sqrt
 
 make_button_result("=").grid(row=1, column=4, sticky="wens", padx=1, pady=2)
+make_clean_button("C").grid(row=4, column=2, sticky="wens", padx=1, pady=2)
 
 #increase size number
 for i in range(1, 7):
