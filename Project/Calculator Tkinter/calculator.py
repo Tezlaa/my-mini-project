@@ -12,14 +12,24 @@ def add_number(number):
     
 def add_operation(operation):
     output = field_write.get()
-    if output[-1] in '-+/*^.√':
+    if operation == "√":
+        operation = "sqrt("+ output +")"
+        field_write.delete(0, END)
+        field_write.insert(0, operation)
+        return
+    elif operation == "^":
+        operation = output + "**"
+        field_write.delete(0, END)
+        field_write.insert(0, operation)
+        return
+    elif output[-1] in '-+/*':
         output = output[:-1]
-    elif '+' in output or '-' in output or '/' in output or '*' in output:
+    elif '+' in output or '-' in output or '/' in output or '*' in output or '**' in output or "sqrt" in output:
         calculate()
         output = field_write.get()
     field_write.delete(0, END)
     field_write.insert(0, output + operation)
-    
+
 def calculate():
     value = field_write.get()
     if value[-1] in '-+/*':
@@ -66,7 +76,7 @@ def make_clean_button(symbol):
 main_menu = Tk()
 
 #Visual for the window
-main_menu.geometry("266x400+1500+100")
+main_menu.geometry("268x300+1500+100")
 main_menu.resizable(False, False)
 main_menu.title("CALCULATOR")
 main_menu.iconbitmap(default="D:\Developments\Python\GIT\mini-project\Project\Calculator Tkinter\icon.ico")
@@ -77,9 +87,9 @@ main_menu["bg"] = "white"
 main_menu.bind('<Key>', press_key)
 
 #main input field 
-field_write = ttk.Entry(main_menu, justify=RIGHT, font=("", 20,), width=13)
+field_write = ttk.Entry(main_menu, justify=RIGHT, font=("", 15,))
 field_write.insert(0, 0)
-field_write.grid(row=0, column=0, columnspan=4, sticky="we")
+field_write.grid(row=0, column=0, columnspan=4, sticky="wens")
 
 #created buttons with numbers from 9 to 0
 make_button(7).grid(row=1, column=0, sticky="wens",padx=2, pady=2)
@@ -101,14 +111,17 @@ make_operation_button("/").grid(row=3, column=3, sticky="wens", padx=2, pady=2)
 make_operation_button("*").grid(row=4, column=3, sticky="wens", padx=2, pady=2)
 
 #math operation
-make_operation_button("^").grid(row=2, column=4, sticky="wens", padx=1, pady=2) #pow
-make_operation_button(".").grid(row=3, column=4, sticky="wens", padx=1, pady=2) #dot 
-make_operation_button("√").grid(row=4, column=4, sticky="wens", padx=1, pady=2) #sqrt
+make_operation_button("^").grid(row=4, column=4, sticky="wens", padx=1, pady=2) #pow
+make_operation_button(".").grid(row=2, column=4, sticky="wens", padx=1, pady=2) #dot 
+make_operation_button("√").grid(row=3, column=4, sticky="wens", padx=1, pady=2) #sqrt
 
 make_button_result("=").grid(row=1, column=4, sticky="wens", padx=1, pady=2)
 make_clean_button("C").grid(row=4, column=2, sticky="wens", padx=1, pady=2)
 
 #increase size number
+
+main_menu.grid_rowconfigure(0, minsize=60)
+
 for i in range(1, 7):
     main_menu.grid_rowconfigure(i, minsize=60)
 for j in range(3):
