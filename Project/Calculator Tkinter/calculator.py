@@ -83,6 +83,8 @@ main_menu.iconbitmap(default="D:\Developments\Python\GIT\mini-project\Project\Ca
 main_menu.attributes("-alpha", 1)
 main_menu["bg"] = "white"
 
+menu = Menu(main_menu, bg="#234243")
+
 #bind on number
 main_menu.bind('<Key>', press_key)
 
