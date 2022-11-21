@@ -27,7 +27,7 @@ def insert_in_tree(root, unit):
 def sort_max(root):
     if root != None:
         sort_max(root.left)
-        # print(root.digit)
+        print(root.digit)
         sort_max(root.right)
 
 
@@ -35,7 +35,7 @@ if __name__=="__main__":
     
     finall_array = []
     result = []
-    cycle_quality = 10000
+    cycle_quality = input("How many numbers are in the sorting: ")
     
     tree = Node(randint(1, cycle_quality))
     
@@ -56,8 +56,8 @@ if __name__=="__main__":
     for cycle in range(cycle_quality):
         finall_array.append(randint(1, cycle_quality))
     finall_array.sort()
-    # for cycle in range(cycle_quality):
-    #     print(finall_array[cycle])
+    for cycle in range(cycle_quality):
+        print(finall_array[cycle])
     
     stop = time()
     difference = stop-start
@@ -77,6 +77,3 @@ if __name__=="__main__":
         writer = csv.writer(file)
         for i in result:
             writer.writerow(i)
-        
-        
-    #print(f'\n\nTree sort 1 - \t{result}\nsort() 2 - \t{result2}\n\n')
