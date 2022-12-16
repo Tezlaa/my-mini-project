@@ -10,14 +10,14 @@ class Dictionary:
         # file check
         try:
             os.stat(self.name_file).st_size == 0
-        except:
-            with open(self.name_file, "w", newline=""):
+        except FileNotFoundError:
+            with open(self.name_file, "w", newline="", encoding="utf8"):
                 pass
 
         self.header = ["English", "Transcript", "Translation"]
 
         if os.stat(self.name_file).st_size == 0:
-            with open(self.name_file, "w", newline="") as f:
+            with open(self.name_file, "w", newline="", encoding="utf8") as f:
                 writer = csv.DictWriter(f, fieldnames=self.header)
                 writer.writeheader()
 
@@ -42,7 +42,6 @@ class Dictionary:
             f.close()
 
     def remove_row(self, column_number: int):
-        
         counter = 0
         with open(self.name_file, "r", encoding="utf8") as f_data:
             reader = csv.reader(f_data)
