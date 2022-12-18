@@ -3,7 +3,9 @@ import os
 
 
 class Dictionary:
-    def __init__(self, name_file: str):
+    """Name your datas file, default=data"""
+    
+    def __init__(self, name_file: str="data"):
         
         self.name_file = f'{name_file}.csv'
 
@@ -35,6 +37,8 @@ class Dictionary:
             f.close()
 
     def get_all_word(self):
+        """Getter with return of all words of data file"""
+        
         with open(self.name_file, "r", newline="", encoding="utf8") as f:
             for line in csv.reader(f):
                 print(line)
@@ -42,6 +46,8 @@ class Dictionary:
             f.close()
 
     def remove_row(self, column_number: int):
+        """Delete word by index 0-title, 1-word..."""
+        
         counter = 0
         with open(self.name_file, "r", encoding="utf8") as f_data:
             reader = csv.reader(f_data)
@@ -60,21 +66,30 @@ class Dictionary:
         os.rename("tamp.csv", self.name_file)
                     
     def clear(self):
+        """Clear all word in the data file"""
+        
         with open(self.name_file, "w", newline="", encoding="utf8") as f:
             writer = csv.DictWriter(f, fieldnames=self.header)
             writer.writeheader()
 
             f.close()
 
-
 if __name__ == "__main__":
-    dictionary = Dictionary("data")
+    dictionary = Dictionary("datafiles")
     
-    dictionary.set_word("Open", "опэн", "Открыть") 
-    
-    dictionary.get_all_word()
+    menu = True
+    while menu:
+        quation = int(input("1 - add word\t2 - get all dictionary\t3 - delete word\n4 - delete all dictionary\nSelect Action: "))
+        
+        if quation == 1:
+            dictionary.set_word(input("Word on english: "), input("Transcript: "), input("Translation: ")) 
+            dictionary.get_all_word()
+        if quation == 2:
+            dictionary.get_all_word()
+        if quation == 3:
+            dictionary.get_all_word()
+            dictionary.remove_row(int(input("select row: ")))
+        if quation == 4:
+            dictionary.clear()
 
-    dictionary.clear()
-    
-    
     
