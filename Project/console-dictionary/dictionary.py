@@ -1,6 +1,18 @@
 import csv
 import os
 
+"""Style"""
+R = '\x1b[31m'
+G = '\x1b[32m'
+B = '\x1b[34m'
+W = '\x1b[37m'
+Y = '\x1b[33m'
+M = '\x1b[35m'
+C = '\x1b[36m'
+Bl = '\x1b[39m'
+
+S_b = '\x1b[1m'
+S_n = '\x1b[22m'
 
 class Dictionary:
     """Name your datas file, default=data"""
@@ -29,7 +41,7 @@ class Dictionary:
         """Word on english, transcript, translation"""
 
         with open(self.name_file, "a", newline="", encoding="utf8") as f:
-            new_row = [word_on_eng, transcript, translation]
+            new_row = [word_on_eng, "["+transcript+"]", translation]
 
             writer = csv.writer(f)
             writer.writerow(new_row)
@@ -39,12 +51,34 @@ class Dictionary:
     def get_all_word(self):
         """Getter with return of all words of data file"""
         
+        counter = 0
+        with open(self.name_file, "r", newline="", encoding="utf8") as f:
+            
+            list_length_eng   = []
+            list_length_trans = [] 
+            for w in csv.reader(f):
+                list_length_eng.append(w[0])
+                list_length_trans.append(w[1])
+            
+            space_after_eng = canculate_max_length(list_length_eng, "ENGLISH")
+            space_after_tranc = canculate_max_length(list_length_trans, "TRANSCRIPT")
+        f.close()
+        
         with open(self.name_file, "r", newline="", encoding="utf8") as f:
             for line in csv.reader(f):
-                print(line)
 
-            f.close()
+                if counter == 0:
+                    print(f'{S_b}{C}    ENGLISH{Bl}{" " * space_after_eng}TRANSCRIPT{G}{" " * (space_after_tranc)}TRANSLATION{W}{S_n}')
+                else:
+                    text = print_in_row(line, (space_after_eng + 7), (space_after_eng + space_after_tranc + 17))
+                    print(f'{W}{counter} - {C}{text[0]}{Bl}{text[1]}{G}{text[2]}{W}')
 
+                counter += 1
+                
+            if counter == 1:
+                print(f'{C}NONE{Bl} \tNONE{G}\t   NONE{W}')      
+        f.close()
+            
     def remove_row(self, column_number: int):
         """Delete word by index 0-title, 1-word..."""
         
@@ -73,8 +107,35 @@ class Dictionary:
             writer.writeheader()
 
             f.close()
+      
+      
+def print_in_row(text: dict, start_second_word: int, start_last_word: int) -> dict:
+    """Takes dictionary text
+    Integer starts second words (example: "Transcrip" ->)"""
+    
+    return [text[0] + (" " * (start_second_word - len(text[0]))), text[1] + (" " * (start_last_word - (start_second_word + len(text[1])))), text[2]]
+
+
+def canculate_max_length(text: list, word: str) -> str:
+    """Takes list (example: ["Hello", "No", "Okey"])
+    Takes word (example: "Transcript")"""
+    
+    max_space = 0
+    
+    for words in text:
+        length_word = len(words)
+        
+        if length_word > max_space:
+            max_space = length_word
+    
+    if max_space - len(word) < 4:
+        return 5
+            
+    return (max_space - len(word)) + 1
 
 if __name__ == "__main__":
+    print(W)
+    
     dictionary = Dictionary("datafiles")
     
     menu = True
@@ -82,7 +143,7 @@ if __name__ == "__main__":
         quation = int(input("1 - add word\t2 - get all dictionary\t3 - delete word\n4 - delete all dictionary\nSelect Action: "))
         
         if quation == 1:
-            dictionary.set_word(input("Word on english: "), input("Transcript: "), input("Translation: ")) 
+            dictionary.set_word(input("Word on english: ").strip(), input("Transcript: ").strip(), input("Translation: ").strip()) 
             dictionary.get_all_word()
         if quation == 2:
             dictionary.get_all_word()
@@ -91,5 +152,6 @@ if __name__ == "__main__":
             dictionary.remove_row(int(input("select row: ")))
         if quation == 4:
             dictionary.clear()
-
-    
+        
+        print("\n\n")
+        
