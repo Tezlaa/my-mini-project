@@ -35,8 +35,6 @@ class Dictionary:
                 writer = csv.DictWriter(f, fieldnames=self.header)
                 writer.writeheader()
 
-                f.close()
-
     def set_word(self, word_on_eng: str, transcript: str, translation: str):
         """Word on english, transcript, translation"""
 
@@ -45,8 +43,6 @@ class Dictionary:
 
             writer = csv.writer(f)
             writer.writerow(new_row)
-
-            f.close()
 
     def get_all_word(self):
         """Getter with return of all words of data file"""
@@ -62,7 +58,6 @@ class Dictionary:
             
             space_after_eng = canculate_max_length(list_length_eng, "ENGLISH")
             space_after_tranc = canculate_max_length(list_length_trans, "TRANSCRIPT")
-        f.close()
         
         with open(self.name_file, "r", newline="", encoding="utf8") as f:
             for line in csv.reader(f):
@@ -77,7 +72,6 @@ class Dictionary:
                 
             if counter == 1:
                 print(f'{C}NONE{Bl} \tNONE{G}\t   NONE{W}')      
-        f.close()
             
     def remove_row(self, column_number: int):
         """Delete word by index 0-title, 1-word..."""
@@ -94,7 +88,6 @@ class Dictionary:
                         continue
                     writer.writerow(r)                    
                     counter += 1
-            f_data.close()
             
             os.remove(self.name_file)
         os.rename("tamp.csv", self.name_file)
@@ -106,8 +99,6 @@ class Dictionary:
             writer = csv.DictWriter(f, fieldnames=self.header)
             writer.writeheader()
 
-            f.close()
-      
       
 def print_in_row(text: dict, start_second_word: int, start_last_word: int) -> dict:
     """Takes dictionary text
