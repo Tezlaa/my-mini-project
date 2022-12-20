@@ -73,7 +73,7 @@ class Dictionary:
                 counter += 1
 
             if counter == 1:
-                print(f'{C}NONE{Bl} \tNONE{G}\t   NONE{W}')
+                print(f'{C}     NONE{Bl} \t NONE{G}\t\tNONE{W}')
 
     def remove_row(self, column_number: int):
         """Delete word by index 0-title, 1-word..."""
@@ -127,6 +127,26 @@ def canculate_max_length(text: list, word: str) -> int:
 
     return (max_space - len(word)) + 1
 
+def paint(text: str ,color: str, style: str = "big") -> str:
+    """Text -> 'your text'
+    Color -> 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
+    Style default='big' -> 'small'
+    
+    COLOR: Green='green', Red='red', Yellow='yel', Blue='blue', Magenta='mange', Cyan='cyan'"""
+
+    available_color = {G:"green", R:"red", Y:"yel", B:"blue", M: "mange", C: "cyan"}
+
+    if style == "small":
+        style = S_n
+    else:
+        style = S_b
+
+    for key, value in available_color.items():
+        if color is value:
+            return f'{style}{key}{text}{W}{S_n}'
+
+    raise ValueError(f'Error, select one from color: {[value for value in available_color.values()]}')
+
 
 if __name__ == "__main__":
     print(W)
@@ -135,19 +155,8 @@ if __name__ == "__main__":
 
     menu = True
     while menu:
-        quation = int(
-            input("1 - add word\t2 - get all dictionary\t3 - delete word\n4 - delete all dictionary\nSelect Action: "))
+        print(f'''{C}
+█▀▄ █ █▀▀ ▀█▀ █ █▀█ █▄░█ ▄▀█ █▀█ █▄█
+█▄▀ █ █▄▄ ░█░ █ █▄█ █░▀█ █▀█ █▀▄ ░█░{W}\n{"_" * 36}''')
 
-        if quation == 1:
-            dictionary.set_word(input("Word on english: ").strip(), input("Transcript: ").strip(),
-                                input("Translation: ").strip())
-            dictionary.get_all_word()
-        if quation == 2:
-            dictionary.get_all_word()
-        if quation == 3:
-            dictionary.get_all_word()
-            dictionary.remove_row(int(input("select row: ")))
-        if quation == 4:
-            dictionary.clear()
-
-        print("\n\n")
+        int(input())
