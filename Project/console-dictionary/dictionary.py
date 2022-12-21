@@ -40,7 +40,10 @@ class Dictionary:
         """Word on english, transcript, translation"""
 
         with open(self.name_file, "a", newline="", encoding="utf8") as f:
-            new_row = [word_on_eng, "[" + transcript + "]", translation]
+            if transcript != "":
+                new_row = [word_on_eng, "[" + transcript + "]", translation]
+            else:
+                new_row = [word_on_eng, transcript, translation]
 
             writer = csv.writer(f)
             writer.writerow(new_row)
@@ -64,8 +67,9 @@ class Dictionary:
             for line in csv.reader(f):
 
                 if counter == 0:
-                    print(
-                        f'{S_b}{C}    ENGLISH{Bl}{" " * space_after_eng}TRANSCRIPT{G}{" " * space_after_trans}TRANSLATION{W}{S_n}')
+                    title = f'    ENGLISH{" " * space_after_eng}TRANSCRIPT{" " * space_after_trans}TRANSLATION'
+
+                    print(f'{"_" * len(title)}\n{S_b}{C}    ENGLISH{Bl}{" " * space_after_eng}TRANSCRIPT{G}{" " * space_after_trans}TRANSLATION{W}{S_n}')
                 else:
                     text = print_in_row(line, (space_after_eng + 7), (space_after_eng + space_after_trans + 17))
                     print(f'{W}{counter} - {C}{text[0]}{Bl}{text[1]}{G}{text[2]}{W}')
@@ -132,9 +136,9 @@ def paint(text: str ,color: str, style: str = "big") -> str:
     Color -> 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
     Style default='big' -> 'small'
     
-    COLOR: Green='green', Red='red', Yellow='yel', Blue='blue', Magenta='mange', Cyan='cyan'"""
+    COLOR: Green='green', Red='red', Yellow='yel', Blue='blue', Magenta='mange', Cyan='cyan', Black/Grey='grey'"""
 
-    available_color = {G:"green", R:"red", Y:"yel", B:"blue", M: "mange", C: "cyan"}
+    available_color = {G:"green", R:"red", Y:"yel", B:"blue", M: "mange", C: "cyan", Bl: "grey"}
 
     if style == "small":
         style = S_n
@@ -147,6 +151,24 @@ def paint(text: str ,color: str, style: str = "big") -> str:
 
     raise ValueError(f'Error, select one from color: {[value for value in available_color.values()]}')
 
+def menu_dictionary(select: int):
+    while True:
+        os.system('cls||clear')
+
+        dictionary.get_all_word()
+
+        print(f'\n{paint("+", "green")}word for add\t\t    {paint("-", "red")}word for del\n\n')
+
+        select_with_menu_dictionary = input(f'{paint(">>>", "cyan")}')
+        
+        if select_with_menu_dictionary[0] is "+":
+            word_on_eng = select_with_menu_dictionary[1:]
+
+            dictionary.set_word(word_on_eng, input(f'{paint(" >>>", "grey", "small")}'), input(f'{paint(" >>>", "green", "small")}'))
+        elif select_with_menu_dictionary[0] is "-":
+            index_for_del = int(select_with_menu_dictionary[1:])
+
+            dictionary.remove_row(index_for_del)
 
 
 if __name__ == "__main__":
@@ -157,7 +179,20 @@ if __name__ == "__main__":
     menu = True
     while menu:
         print(f'''{C}
-█▀▄ █ █▀▀ ▀█▀ █ █▀█ █▄░█ ▄▀█ █▀█ █▄█
-█▄▀ █ █▄▄ ░█░ █ █▄█ █░▀█ █▀█ █▀▄ ░█░{W}\n{"_" * 36}''')
+   █▀▄ █ █▀▀ ▀█▀ █ █▀█ █▄░█ ▄▀█ █▀█ █▄█
+   █▄▀ █ █▄▄ ░█░ █ █▄█ █░▀█ █▀█ █▀▄ ░█░{W}\n{"_" * 42}''')
 
+        try:
+            select_with_main_menu = int(input(f'{paint("1", "green")}-dictionary\t\t{paint("2", "green")}-games\t      {paint(">>>", "cyan")}'))
+            if select_with_main_menu is 1 or 2:
+                menu_dictionary(select_with_main_menu)
+            else:
+                raise ValueError()
+        except ValueError:
+            print(f'\t{paint("Write number: 1 or 2", "red")}\n\t  {paint("(type any key)", "red", "small")}')
+            input()
+
+            os.system('cls||clear')
+            continue
+        
         int(input())
