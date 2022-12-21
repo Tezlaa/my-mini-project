@@ -36,7 +36,7 @@ class Dictionary:
                 writer = csv.DictWriter(f, fieldnames=self.header)
                 writer.writeheader()
 
-    def set_word(self, word_on_eng: str, transcript: str, translation: str):
+    def set_word(self, word_on_eng: str, transcript: str, translation: str) -> None:
         """Word on english, transcript, translation"""
 
         with open(self.name_file, "a", newline="", encoding="utf8") as f:
@@ -45,7 +45,7 @@ class Dictionary:
             writer = csv.writer(f)
             writer.writerow(new_row)
 
-    def get_all_word(self):
+    def get_all_word(self) -> None:
         """Getter with return of all words of data file"""
 
         counter = 0
@@ -75,7 +75,7 @@ class Dictionary:
             if counter == 1:
                 print(f'{C}     NONE{Bl} \t NONE{G}\t\tNONE{W}')
 
-    def remove_row(self, column_number: int):
+    def remove_row(self, column_number: int) -> None:
         """Delete word by index 0-title, 1-word..."""
 
         counter = 0
@@ -94,7 +94,7 @@ class Dictionary:
         os.remove(self.name_file)
         os.rename("tamp.csv", self.name_file)
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all word in the data file"""
 
         with open(self.name_file, "w", newline="", encoding="utf8") as f:
@@ -146,6 +146,7 @@ def paint(text: str ,color: str, style: str = "big") -> str:
             return f'{style}{key}{text}{W}{S_n}'
 
     raise ValueError(f'Error, select one from color: {[value for value in available_color.values()]}')
+
 
 
 if __name__ == "__main__":
