@@ -4,12 +4,20 @@ from gsm import Gms_conect
 if __name__=="__main__":
     main = Gms_conect()
 
-    print(main.get_all_connect())
-    print(main.get_available_connect())
-    main.connect_gms(main.get_available_connect()[0])
+    all_connect = main.get_all_connect()
     
-    main.check()
+    print(all_connect, end="\n\n")
     
-    main.close()
+    for module in all_connect:
+        
+        connect = main.connect_gms(module)
+        
+        if connect != "Error":
+            main.check()
+
+            main.close()
+        else:
+            print(f'{module} - error')
+    
     input("end")
     

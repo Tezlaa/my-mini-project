@@ -13,9 +13,19 @@ class Gms_conect:
     def __init__(sefl):
         pass
 
-    def connect_gms(self, module: str, pin: int=None) -> None:
-        PORT = module
-        BAUDRATE = self.s.baudrate
+    def connect_gms(self, connect: list, pin: int=None) -> None:
+    
+        try:
+            s = serial.Serial(connect)
+            s.close()
+        except (OSError, serial.SerialException):
+            return "Error"
+        
+        print(s)
+        
+        
+        PORT = s.port
+        BAUDRATE = s.baudrate
         PIN = pin
         
         #    Uncomment the following line to see what the modem is doing:
@@ -43,21 +53,6 @@ class Gms_conect:
     
     def close(sefl) -> None:
         modem.close()
-            
-    def get_available_connect(self) -> list:
-
-        connected = self.get_all_connect()
-
-        result = []
-        for port in connected:
-            try:
-                self.s = serial.Serial(port)
-                self.s.close()
-                result.append(port)
-            except (OSError, serial.SerialException):
-                pass
-
-        return result
 
     def get_all_connect(self) -> list:
 
