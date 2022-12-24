@@ -9,66 +9,90 @@ import time
 import sys
 
 
-list = serial.tools.list_ports.comports()
-connected = []
-for element in list:
-    connected.append(element.device)
-print("Connected COM ports: " + str(connected))
-
-
-if sys.platform.startswith('win'):
-
-    ports = ['COM%s' % (i + 1) for i in range(256)]
-elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-
-    ports = glob.glob('/dev/tty[A-Za-z]*')
-elif sys.platform.startswith('darwin'):
-
-    ports = glob.glob('/dev/tty.*')
-else:
-    raise EnvironmentError('Unsupported platform')
-
-result = []
-for port in ports:
-    try:
-        s = serial.Serial(port)
-        s.close()
-        result.append(port)
-    except (OSError, serial.SerialException):
+class Gms_conect:
+    def __init__(sefl):
         pass
-print("Availible COM Ports: " + str(result))
 
-PORT = str(result[0])
-BAUDRATE = s.baudrate
-PIN = None
+    def connect_gms(self, module: str, pin: int=None) -> None:
+        PORT = module
+        BAUDRATE = self.s.baudrate
+        PIN = pin
+        
+        #    Uncomment the following line to see what the modem is doing:
+        logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+        modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=self.handle_sms)
+        modem.smsTextMode = False
+        modem.connect(PIN)
 
-def handle_sms(sms):
-    print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
+        time.sleep(4)
+            
+    def check(self) -> None:
+        
+        smss = modem.listStoredSms(status=Sms.STATUS_ALL, delete=True);
+        print(str(len(smss)) + ' messages found')
 
-def main():
-    print('Initializing modem...')
+        for i in range(len(smss)):
+            sms = smss[i]
+            handleSms(sms)
 
-    # Uncomment the following line to see what the modem is doing:
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
-    modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handle_sms)
-    modem.smsTextMode = False
-    modem.connect(PIN)
+        print('Waiting for new SMS message...')    
+        try:    
+            modem.rxThread.join(2**31)
+        finally:
+            modem.close();
+    
+    def close(sefl) -> None:
+        modem.close()
+            
+    def get_available_connect(self) -> list:
 
-    #modem.processStoredSms(False)
-    smss = modem.listStoredSms(status=Sms.STATUS_ALL, delete=True);
-    print(str(len(smss)) + ' messages found')
+        connected = self.get_all_connect()
 
-    for i in range(len(smss)):
-        sms = smss[i]
-        handleSms(sms)
+        result = []
+        for port in connected:
+            try:
+                self.s = serial.Serial(port)
+                self.s.close()
+                result.append(port)
+            except (OSError, serial.SerialException):
+                pass
 
-    print('Waiting for new SMS message...')    
-    try:    
-        modem.rxThread.join(2**31)
-    finally:
-        modem.close();
+        return result
 
-if __name__ == '__main__':
-    main()
+    def get_all_connect(self) -> list:
 
-    input()
+        list_with_connect = serial.tools.list_ports.comports()
+
+        connected = []
+        for element in list_with_connect:
+            connected.append(element.device)
+
+        return connected
+
+    @staticmethod
+    def handle_sms(sms) -> str:
+        return f'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text)
+
+
+
+    # # if sys.platform.startswith('win'):
+
+    # #     ports = ['COM%s' % (i + 1) for i in range(256)]
+    # # elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+
+    # #     ports = glob.glob('/dev/tty[A-Za-z]*')
+    # # elif sys.platform.startswith('darwin'):
+
+    # #     ports = glob.glob('/dev/tty.*')
+    # # else:
+    # #     raise EnvironmentError('Unsupported platform')
+
+
+
+    # index_with_connect = 0
+    # try:
+    #     PORT = str(result[index_with_connect])
+    #     BAUDRATE = s.baudrate
+    #     PIN = None
+    # except IndexError:
+    #     index_with_connect += 1
