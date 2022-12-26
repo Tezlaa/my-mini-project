@@ -14,7 +14,6 @@ Bl = '\x1b[39m'
 S_b = '\x1b[1m'
 S_n = '\x1b[22m'
 
-
 class Dictionary:
     """Name your datas file, default=data"""
 
@@ -35,7 +34,7 @@ class Dictionary:
             with open(self.name_file, "w", newline="", encoding="utf8") as f:
                 writer = csv.DictWriter(f, fieldnames=self.header)
                 writer.writeheader()
-
+    
     def set_word(self, word_on_eng: str, transcript: str, translation: str) -> None:
         """Word on english, transcript, translation"""
 
@@ -104,19 +103,32 @@ class Dictionary:
         with open(self.name_file, "w", newline="", encoding="utf8") as f:
             writer = csv.DictWriter(f, fieldnames=self.header)
             writer.writeheader()
-
+            
 
 def print_in_row(text: list, start_second_word: int, start_last_word: int) -> list:
-    """Takes dictionary text
-    Integer starts second words (example: "Transcript" ->)"""
+    """
+
+    Args:
+        text (list): list -> for text in csv.reader(f)
+        start_second_word (int): "Hello" -> second word on 0 index, write 0
+        start_last_word (int): "Hello" -> second word on 0 index, write 0
+
+    Returns:
+        list: [Hello      ]
+    """
 
     return [text[0] + (" " * (start_second_word - len(text[0]))),
             text[1] + (" " * (start_last_word - (start_second_word + len(text[1])))), text[2]]
 
-
 def canculate_max_length(text: list, word: str) -> int:
-    """Takes list (example: ["Hello", "No", "Okay"])
-    Takes word (example: "Transcript")"""
+    """
+    Args:
+        text (list): [Hello, ..., ...]
+        word (str): "ENGLISH"
+
+    Returns:
+        int: 5...
+    """
 
     max_space = 0
 
@@ -132,12 +144,14 @@ def canculate_max_length(text: list, word: str) -> int:
     return (max_space - len(word)) + 1
 
 def paint(text: str ,color: str, style: str = "big") -> str:
-    """Text -> 'your text'
-    Color -> 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
-    Style default='big' -> 'small'
+    """
+    Args:
+        Text  (str) : 'your text'
+        Color (str) : 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
+        Style (str) default='big' : 'small'
     
     COLOR: Green='green', Red='red', Yellow='yel', Blue='blue', Magenta='mange', Cyan='cyan', Black/Grey='grey'"""
-
+    
     available_color = {G:"green", R:"red", Y:"yel", B:"blue", M: "mange", C: "cyan", Bl: "grey"}
 
     if style == "small":
@@ -146,53 +160,7 @@ def paint(text: str ,color: str, style: str = "big") -> str:
         style = S_b
 
     for key, value in available_color.items():
-        if color is value:
+        if color == value:
             return f'{style}{key}{text}{W}{S_n}'
 
     raise ValueError(f'Error, select one from color: {[value for value in available_color.values()]}')
-
-def menu_dictionary(select: int):
-    while True:
-        os.system('cls||clear')
-
-        dictionary.get_all_word()
-
-        print(f'\n{paint("+", "green")}word for add\t\t    {paint("-", "red")}word for del\n\n')
-
-        select_with_menu_dictionary = input(f'{paint(">>>", "cyan")}')
-        
-        if select_with_menu_dictionary[0] is "+":
-            word_on_eng = select_with_menu_dictionary[1:]
-
-            dictionary.set_word(word_on_eng, input(f'{paint(" >>>", "grey", "small")}'), input(f'{paint(" >>>", "green", "small")}'))
-        elif select_with_menu_dictionary[0] is "-":
-            index_for_del = int(select_with_menu_dictionary[1:])
-
-            dictionary.remove_row(index_for_del)
-
-
-if __name__ == "__main__":
-    print(W)
-
-    dictionary = Dictionary("datafiles")
-
-    menu = True
-    while menu:
-        print(f'''{C}
-   █▀▄ █ █▀▀ ▀█▀ █ █▀█ █▄░█ ▄▀█ █▀█ █▄█
-   █▄▀ █ █▄▄ ░█░ █ █▄█ █░▀█ █▀█ █▀▄ ░█░{W}\n{"_" * 42}''')
-
-        try:
-            select_with_main_menu = int(input(f'{paint("1", "green")}-dictionary\t\t{paint("2", "green")}-games\t      {paint(">>>", "cyan")}'))
-            if select_with_main_menu is 1 or 2:
-                menu_dictionary(select_with_main_menu)
-            else:
-                raise ValueError()
-        except ValueError:
-            print(f'\t{paint("Write number: 1 or 2", "red")}\n\t  {paint("(type any key)", "red", "small")}')
-            input()
-
-            os.system('cls||clear')
-            continue
-        
-        int(input())
