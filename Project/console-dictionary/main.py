@@ -1,6 +1,6 @@
 import os
 from tools.dictionary import Dictionary, paint
-from tools.forwords import get_transcript
+from tools.forWords import get_transcript
 
 """Style"""
 W = '\x1b[37m'
@@ -19,7 +19,7 @@ def menu_dictionary():
         if select_with_menu_dictionary[0] == "+":
             
             word_on_eng = select_with_menu_dictionary[1:]
-            main.set_word(word_on_eng, get_transcript(word_on_eng), )
+            main.set_word(word_on_eng, get_transcript(word_on_eng), input(paint(">>>", "green")))
         elif select_with_menu_dictionary[0] == "-":
             
             index_for_del = int(select_with_menu_dictionary[1:])
