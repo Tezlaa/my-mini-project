@@ -12,18 +12,22 @@ def menu_dictionary():
 
         main.get_all_word()
 
-        print(f'\n{paint("+", "green")}word for add\t\t    {paint("-", "red")}word for del\n\n')
+        print(f'\n{paint("+word", "green")}for add\t\t    {paint("-index", "red")}del by index\n\
+{paint("*index", "yel")}-edit word by index\n\n')
 
         select_with_menu_dictionary = input(f'{paint(">>>", "cyan")}')
         
         if select_with_menu_dictionary[0] == "+":
             
             word_on_eng = select_with_menu_dictionary[1:]
-            main.set_word(word_on_eng, get_transcript(word_on_eng), input(paint(">>>", "green")))
+            main.set_word(word_on_eng, get_transcript(word_on_eng), input(paint(" >>>", "green")))
         elif select_with_menu_dictionary[0] == "-":
             
             index_for_del = int(select_with_menu_dictionary[1:])
             main.remove_row(index_for_del)
+        elif select_with_menu_dictionary[:1] == "*":
+            
+            main.edit_row(int(select_with_menu_dictionary[1:2]))
             
         if select_with_menu_dictionary.lower() == "exit":
             return

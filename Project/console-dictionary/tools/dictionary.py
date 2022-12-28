@@ -1,5 +1,8 @@
+
 import csv
 import os
+
+from tools.forWords import get_transcript
 
 """Style"""
 R = '\x1b[31m'
@@ -40,9 +43,9 @@ class Dictionary:
 
         with open(self.name_file, "a", newline="", encoding="utf8") as f:
             if transcript != "":
-                new_row = [word_on_eng, "[" + transcript + "]", translation]
+                new_row = [word_on_eng.capitalize(), "[" + transcript + "]", translation.capitalize()]
             else:
-                new_row = [word_on_eng, transcript, translation]
+                new_row = [word_on_eng.capitalize(), transcript, translation.capitalize()]
 
             writer = csv.writer(f)
             writer.writerow(new_row)
@@ -74,9 +77,32 @@ class Dictionary:
                     print(f'{W}{counter} - {C}{text[0]}{Bl}{text[1]}{G}{text[2]}{W}')
 
                 counter += 1
-
+            
             if counter == 1:
                 print(f'{C}     NONE{Bl} \t NONE{G}\t\tNONE{W}')
+    
+    def edit_row(self, column_number: int) -> None:
+        """Edit row by index"""
+        
+        counter = 0
+        with open(self.name_file, "r", encoding="utf8") as f_data:
+            reader = csv.reader(f_data)
+
+            with open("tamp.csv", "w", newline="", encoding="utf8") as f_tamp:
+                writer = csv.writer(f_tamp)
+                for r in reader:
+                    if counter == column_number:
+                        os.system('cls||clear')
+                        
+                        self.get_all_word()
+                        
+                        word_eng = input(f'\n{paint(" |  EDIT  |", "yel")}\n{paint(" >>>", "cyan")}')
+                        r = [word_eng, get_transcript(word_eng), input(paint("  >>>", "green"))]
+                    writer.writerow(r)
+                    counter += 1
+
+        os.remove(self.name_file)
+        os.rename("tamp.csv", self.name_file) 
 
     def remove_row(self, column_number: int) -> None:
         """Delete word by index 0-title, 1-word..."""

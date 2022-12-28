@@ -1,5 +1,4 @@
 import requests
-import deepl
 from bs4 import BeautifulSoup
 
 def get_transcript(word: str) -> str:
