@@ -1,2 +1,6 @@
 __pycache__/
 datafiles.csv
+.vscode
+*csv
+env
+vevn
