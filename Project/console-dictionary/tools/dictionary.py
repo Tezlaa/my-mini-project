@@ -1,4 +1,3 @@
-
 import csv
 import os
 
@@ -17,8 +16,9 @@ Bl = '\x1b[39m'
 S_b = '\x1b[1m'
 S_n = '\x1b[22m'
 
+
 class Dictionary:
-    """Name your datas file, default=data"""
+    """Name your data's file, default=data"""
 
     def __init__(self, name_file: str = "data"):
 
@@ -37,7 +37,7 @@ class Dictionary:
             with open(self.name_file, "w", newline="", encoding="utf8") as f:
                 writer = csv.DictWriter(f, fieldnames=self.header)
                 writer.writeheader()
-    
+
     def set_word(self, word_on_eng: str, transcript: str, translation: str) -> None:
         """Word on english, transcript, translation"""
 
@@ -71,19 +71,21 @@ class Dictionary:
                 if counter == 0:
                     title = f'    ENGLISH{" " * space_after_eng}TRANSCRIPT{" " * space_after_trans}TRANSLATION'
 
-                    print(f'{"_" * len(title)}\n{S_b}{C}    ENGLISH{Bl}{" " * space_after_eng}TRANSCRIPT{G}{" " * space_after_trans}TRANSLATION{W}{S_n}')
+                    print(
+                        f'{"_" * len(title)}\n{S_b}{C}    ENGLISH{Bl}{" " * space_after_eng}TRANSCRIPT{G}'
+                        f'{" " * space_after_trans}TRANSLATION{W}{S_n}')
                 else:
                     text = print_in_row(line, (space_after_eng + 7), (space_after_eng + space_after_trans + 17))
                     print(f'{W}{counter} - {C}{text[0]}{Bl}{text[1]}{G}{text[2]}{W}')
 
                 counter += 1
-            
+
             if counter == 1:
                 print(f'{C}     NONE{Bl} \t NONE{G}\t\tNONE{W}')
-    
+
     def edit_row(self, column_number: int) -> None:
         """Edit row by index"""
-        
+
         counter = 0
         with open(self.name_file, "r", encoding="utf8") as f_data:
             reader = csv.reader(f_data)
@@ -93,16 +95,16 @@ class Dictionary:
                 for r in reader:
                     if counter == column_number:
                         os.system('cls||clear')
-                        
+
                         self.get_all_word()
-                        
+
                         word_eng = input(f'\n{paint(" |  EDIT  |", "yel")}\n{paint(" >>>", "cyan")}')
-                        r = [word_eng, get_transcript(word_eng), input(paint("  >>>", "green"))]
+                        r = [word_eng, "[" + get_transcript(word_eng) + "]", input(paint("  >>>", "green"))]
                     writer.writerow(r)
                     counter += 1
 
         os.remove(self.name_file)
-        os.rename("tamp.csv", self.name_file) 
+        os.rename("tamp.csv", self.name_file)
 
     def remove_row(self, column_number: int) -> None:
         """Delete word by index 0-title, 1-word..."""
@@ -129,7 +131,7 @@ class Dictionary:
         with open(self.name_file, "w", newline="", encoding="utf8") as f:
             writer = csv.DictWriter(f, fieldnames=self.header)
             writer.writeheader()
-            
+
 
 def print_in_row(text: list, start_second_word: int, start_last_word: int) -> list:
     """
@@ -145,6 +147,7 @@ def print_in_row(text: list, start_second_word: int, start_last_word: int) -> li
 
     return [text[0] + (" " * (start_second_word - len(text[0]))),
             text[1] + (" " * (start_last_word - (start_second_word + len(text[1])))), text[2]]
+
 
 def canculate_max_length(text: list, word: str) -> int:
     """
@@ -169,16 +172,17 @@ def canculate_max_length(text: list, word: str) -> int:
 
     return (max_space - len(word)) + 1
 
-def paint(text: str ,color: str, style: str = "big") -> str:
+
+def paint(text: str, color: str, style: str = "big") -> str:
     """
     Args:
-        Text  (str) : 'your text'
-        Color (str) : 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
-        Style (str) default='big' : 'small'
+        text  (str) : 'your text'
+        color (str) : 'green', 'red', 'yel', 'blue', 'mange', 'cyan'
+        style (str) default="big" : 'small'
     
     COLOR: Green='green', Red='red', Yellow='yel', Blue='blue', Magenta='mange', Cyan='cyan', Black/Grey='grey'"""
-    
-    available_color = {G:"green", R:"red", Y:"yel", B:"blue", M: "mange", C: "cyan", Bl: "grey"}
+
+    available_color = {G: "green", R: "red", Y: "yel", B: "blue", M: "mange", C: "cyan", Bl: "grey"}
 
     if style == "small":
         style = S_n
