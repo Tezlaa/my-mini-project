@@ -1,4 +1,5 @@
 import os
+
 from tools.dictionary import Dictionary, paint
 from tools.forWords import get_transcript
 
@@ -13,26 +14,38 @@ def menu_dictionary():
 
         main.get_all_word()
 
-        print(f'\n{paint("+word", "green")}-for add\t\t    {paint("-index", "red")}-del by index\n\
-{paint("*index", "yel")}-edit word by index\n\n')
+        print(f'\n{paint("+word", "green")}-for add\t\t    {paint("-index", "red")}-del by index\n'
+              f'{paint("*index", "yel")}-edit word by index\n\n'
+              f'{paint("exit", "red", "small")}-so that exit\n'
+              )
 
         select_with_menu_dictionary = input(f'{paint(">>>", "cyan")}')
 
+        # add in dictionary
         if select_with_menu_dictionary[0] == "+":
 
             word_on_eng = select_with_menu_dictionary[1:]
             main.set_word(word_on_eng, get_transcript(word_on_eng), input(paint(" >>>", "green")))
+        # delete with dictionary via index
         elif select_with_menu_dictionary[0] == "-":
 
             index_for_del = int(select_with_menu_dictionary[1:])
             main.remove_row(index_for_del)
+        # edit word in dictionary
         elif select_with_menu_dictionary[:1] == "*":
 
             main.edit_row(int(select_with_menu_dictionary[1:2]))
 
+        # exit via the "exit" entry
         if select_with_menu_dictionary.lower() == "exit":
             return
 
+
+def menu_game():
+    os.system("cls||clear")
+    
+    pass
+    
 
 if __name__ == "__main__":
     print(W)
@@ -54,7 +67,7 @@ if __name__ == "__main__":
             if select_with_main_menu == 1:
                 menu_dictionary()
             elif select_with_main_menu == 2:
-                pass
+                menu_game()
             else:
                 raise ValueError()
         except ValueError:

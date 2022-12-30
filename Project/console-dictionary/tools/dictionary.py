@@ -3,7 +3,7 @@ import os
 
 from tools.forWords import get_transcript
 
-"""Style"""
+"""Style """
 R = '\x1b[31m'
 G = '\x1b[32m'
 B = '\x1b[34m'
@@ -132,6 +132,10 @@ class Dictionary:
             writer = csv.DictWriter(f, fieldnames=self.header)
             writer.writeheader()
 
+
+class GameDict(Dictionary):
+    pass
+    
 
 def print_in_row(text: list, start_second_word: int, start_last_word: int) -> list:
     """
