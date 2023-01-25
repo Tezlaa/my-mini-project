@@ -30,24 +30,36 @@ async def add_message(msg: types.Message):
     if not db.mute(user_id):
         # limit length message
         if len(msg.text) <= int(config["limited"]["length_message"]):
-            user_text = msg.text.splitlines()
+            user_text = msg.text
             # check on template
             try:
-                if user_text[1].split("@")[0] == "Связь📝: " and user_text[2] == "Гарант🔐: @unlegal_way_garant":
+                if user_text.find("@unlegal_way_garant") != -1:
                     pass
                 else:
                     raise IndexError
             except IndexError:
-                await msg.reply(f"Отправьте в формате:\n"
-                                f"`*Услуга*\n"
-                                f"Связь📝: @{msg.from_user.username}\n"
-                                f"Гарант🔐: @unlegal_way_garant`",
-                                parse_mode="MARKDOWN")
+                if int(config["limited"]["message_in_day"]) == (db.get_count_message(user_id) + 1):
+                    await msg.delete()
+                    await msg.answer(f'⚠ ***@{msg.from_user.username}, '
+                                     f'Превышено количество сообщений***\n_Попробуйте через 24 часа_',
+                                     parse_mode="MarkdownV2")
+                else:
+                    await msg.delete()
+                    await msg.answer(f'@{msg.from_user.username}, ***Ваше сообщение было удалено, '
+                                     f'потому что Вы не указали гаранта чата*** \n`@unlegal_way_garant`\n\n'
+                                     f'_⏳До сегоднешнего лимита заявок:_ '
+                                     f'***{db.get_count_message(user_id) + 1}'
+                                     f'/{int(config["limited"]["message_in_day"])}***\n'
+                                     f'_Попробуйте через_ ***{int(config["limited"]["hold_message"]) // 60} минут***',
+                                     parse_mode="MarkdownV2")
             finally:
                 db.set_mute(user_id, int(config["limited"]["hold_message"]))
                 db.add_message(user_id, int(config["limited"]["message_in_day"]))
         else:
             await msg.delete()
+            await msg.answer(f'_⚠ @{msg.from_user.username}, '
+                             f'длина превышает {config["limited"]["length_message"]} символов_',
+                             parse_mode="MarkdownV2")
     else:
         await msg.delete()
     
