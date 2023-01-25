@@ -26,7 +26,6 @@ async def add_message(msg: types.Message):
     
     db.create_profile(user_id)
     
-    print(db.mute(user_id))
     # check on mute
     if not db.mute(user_id):
         # limit length message
