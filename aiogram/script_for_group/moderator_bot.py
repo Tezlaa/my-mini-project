@@ -62,7 +62,7 @@ async def add_message(msg: types.Message):
                              parse_mode="MarkdownV2")
     else:
         await msg.delete()
-    
+
 
 if __name__ == "__main__":
     executor.start_polling(dp)
