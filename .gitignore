@@ -1,8 +1,9 @@
 __pycache__/
 datafiles.csv
-.vscode
+*vscode
 *csv
 env
 vevn
-.db
-.cfg
+*db
+*cfg
+*cfg

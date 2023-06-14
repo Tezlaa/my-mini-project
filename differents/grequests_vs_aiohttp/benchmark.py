@@ -3,22 +3,27 @@ import grequests
 import aiohttp
 import asyncio
 import json
+import fake_useragent
 
 
 async def start_benchmark_aiohttp(urls: list, json_post: dict):
     result = []
     
     async with aiohttp.ClientSession() as session:
-        tasks = [session.post(url=url, json=json_post) for url in urls]
+        tasks = [session.post(url=url,
+                              json=json_post,
+                              headers={'user-agent': fake_useragent.UserAgent().random}) for url in urls]
         responses = await asyncio.gather(*tasks)
         
         for response in responses:
-            result.append(await response.json(content_type='text/html'))
+            result.append(await response.json(content_type=None))
         return result
     
 
 def start_benchmark_grequests(urls: list, json_post: dict) -> list:
-    batch_requests = [grequests.post(url=url, json=json_post) for url in urls]
+    batch_requests = [grequests.post(url=url,
+                                     json=json_post,
+                                     headers={'user-agent': fake_useragent.UserAgent().random}) for url in urls]
     responses = grequests.map(batch_requests)
 
     return [json.loads(response.text) for response in responses]
